@@ -2,14 +2,16 @@
     require '/var/gitorg2tw/config.php';
 
     $header = getallheaders();
-    $hmac = hash_hmac('sha1', file_get_contents("php://input"), SECRET);
+    $json = file_get_contents("php://input");
+    $hmac = hash_hmac('sha1', $json, SECRET);
     if (isset($header['X-Hub-Signature']) && $header['X-Hub-Signature']==='sha1='.$hmac) {
+        $payload = json_decode($json, true);
         $twitterText = '';
-        $twitterText .= $_POST['repository']['full_name'].'/'.$_POST['ref']."\n";
-        foreach ($_POST['commits'] as $commit) {
+        $twitterText .= $payload['repository']['full_name'].'/'.$payload['ref']."\n";
+        foreach ($payload['commits'] as $commit) {
             $twitterText .= $commit->message."\n";
         }
-        $twitterText .= $_POST['compare'];
+        $twitterText .= $payload['compare'];
         error_log($twitterText);
     }
 ?>
