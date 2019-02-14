@@ -7,12 +7,11 @@
     if (isset($header['X-Hub-Signature']) && $header['X-Hub-Signature']==='sha1='.$hmac) {
         $payload = json_decode($json, true);
         $twitterText = '';
-        $twitterText .= $payload['repository']['full_name'].'/'.$payload['ref']."\n";
+        $twitterText .= $payload['repository']['full_name'].'リポジトリ '.preg_replace('/^refs\/heads\//', '', $payload['ref'])."ブランチを更新しました。\n\n";
         foreach ($payload['commits'] as $commit) {
-            $twitterText .= $commit->message."\n";
+            $twitterText .= $commit['message']."\n";
         }
-        $twitterText .= $payload['compare'];
-        fwrite(STDERR, print_r($payload, true));
-        fwrite(STDERR, 'TEXT:'.$twitterText);
+        $twitterText .= "\n".$payload['compare'];
+        error_log($twitterText);
     }
 ?>
