@@ -1,5 +1,5 @@
 <?php
-    require '/var/www/config.php';
+    require '/var/gitorg2tw/config.php';
 
     $header = getallheaders();
     $hmac = hash_hmac($HTTP_RAW_POST_DATA, SECRET);
