@@ -4,9 +4,12 @@
     $header = getallheaders();
     $hmac = hash_hmac('sha1', file_get_contents("php://input"), SECRET);
     if (isset($header['X-Hub-Signature']) && $header['X-Hub-Signature']==='sha1='.$hmac) {
-        error_log('OK');
-    }else{
-        error_log('NG');
+        $twitterText = '';
+        $twitterText .= $_POST['repository']['full_name'].'/'.$_POST['ref']."\n";
+        foreach ($_POST['commits'] as $commit) {
+            $twitterText .= $commit->message."\n";
+        }
+        $twitterText .= $_POST['compare'];
+        error_log($twitterText);
     }
-    // error_log(print_r($_POST, true));
 ?>
