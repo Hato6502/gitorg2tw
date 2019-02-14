@@ -12,6 +12,7 @@
             $twitterText .= $commit->message."\n";
         }
         $twitterText .= $payload['compare'];
-        error_log($twitterText);
+        fwrite(STDERR, print_r($payload, true));
+        fwrite(STDERR, 'TEXT:'.$twitterText);
     }
 ?>
