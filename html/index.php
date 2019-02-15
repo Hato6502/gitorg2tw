@@ -1,6 +1,6 @@
 <?php
     require '/var/gitorg2tw/config.php';
-    require "vendor/autoload.php";
+    require "twitteroauth/autoload.php";
     use Abraham\TwitterOAuth\TwitterOAuth;
 
     $header = getallheaders();
