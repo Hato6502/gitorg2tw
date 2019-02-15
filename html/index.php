@@ -17,8 +17,8 @@
     foreach ($payload['commits'] as $commit) {
         $twitterText .= $commit['message']."\n";
     }
-    if (mb_strlen($twitterText) > 280){
-        $twitterText = mb_substr($twitterText, 0, 279).'…';
+    if (mb_strlen($twitterText) > MAX_TEXT_LENGTH) {
+        $twitterText = mb_substr($twitterText, 0, MAX_TEXT_LENGTH - 1).'…';
     }
 
     $twitter = new TwitterOAuth(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET);
