@@ -12,7 +12,7 @@
 
     $payload = json_decode($json, true);
     $twitterText = '';
-    $twitterText .= $payload['repository']['full_name'].'リポジトリ '.preg_replace('/^refs\/heads\//', '', $payload['ref'])." ブランチを更新しました。";
+    $twitterText .= $payload['repository']['full_name'].'リポジトリ '.preg_replace('/^refs\/heads\//', '', $payload['ref'])." ブランチを更新しました。\n";
     $twitterText .= $payload['compare']."\n\n";
     foreach ($payload['commits'] as $commit) {
         $twitterText .= $commit['message']."\n";
