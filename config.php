@@ -6,5 +6,5 @@
     const TWITTER_ACCESS_TOKEN = '';
     const TWITTER_ACCESS_TOKEN_SECRET = '';
 
-    const MAX_TEXT_LENGTH = 200;
+    const MAX_TEXT_LENGTH = 250;
 ?>
