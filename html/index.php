@@ -1,9 +1,11 @@
 <?php
     require '/var/gitorg2tw/config.php';
+    require "vendor/autoload.php";
+    use Abraham\TwitterOAuth\TwitterOAuth;
 
     $header = getallheaders();
     $json = file_get_contents("php://input");
-    $hmac = hash_hmac('sha1', $json, SECRET);
+    $hmac = hash_hmac('sha1', $json, GITHUB_WEBHOOK_SECRET);
     if (isset($header['X-Hub-Signature']) && $header['X-Hub-Signature']==='sha1='.$hmac) {
         $payload = json_decode($json, true);
         $twitterText = '';
@@ -12,6 +14,11 @@
             $twitterText .= $commit['message']."\n";
         }
         $twitterText .= "\n".$payload['compare'];
-        error_log($twitterText);
+
+        $twitter = new TwitterOAuth(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET);
+        $response = $twitter->post('statuses/update', ['status' => $twitterText]);
+        if ($twitter->getLastHttpCode() != 200) {
+            throw new Exception(print_r($response, true));
+        }
     }
 ?>

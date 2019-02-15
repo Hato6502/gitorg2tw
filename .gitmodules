@@ -1,0 +1,3 @@
+[submodule "html/twitteroauth"]
+	path = html/twitteroauth
+	url = https://github.com/abraham/twitteroauth
