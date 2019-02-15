@@ -12,11 +12,14 @@
 
     $payload = json_decode($json, true);
     $twitterText = '';
-    $twitterText .= $payload['repository']['full_name'].'リポジトリ '.preg_replace('/^refs\/heads\//', '', $payload['ref'])."ブランチを更新しました。\n\n";
+    $twitterText .= $payload['repository']['full_name'].'リポジトリ '.preg_replace('/^refs\/heads\//', '', $payload['ref'])." ブランチを更新しました。";
+    $twitterText .= $payload['compare']."\n\n";
     foreach ($payload['commits'] as $commit) {
         $twitterText .= $commit['message']."\n";
     }
-    $twitterText .= "\n".$payload['compare'];
+    if (mb_strlen($twitterText) > 280){
+        $twitterText = mb_substr($twitterText, 0, 279).'…';
+    }
 
     $twitter = new TwitterOAuth(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET);
     $response = $twitter->post('statuses/update', ['status' => $twitterText]);
